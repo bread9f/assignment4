@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Week #3</title>
+
+    <!-- STYLING -->
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/sample-wallpaper.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="#">Hulk</a>
+        <!-- Currently Active -->
+        <a href="#" class="logo is-active">Mavel</a>
+        <a href="#">Venom</a>
+      </div>
+    </nav>
+
+    <!-- Introductory Content -->
+    <header class="header">
+      <div class="container">
+        <h1 class="title">Mavel's Fearless</h1>
+        <p class="subtitle">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. beatae
+          molestias earum eveniet.
+        </p>
+        <div class="search-bar">
+          <input type="search" placeholder="Search" />
+        </div>
+
+        <!-- Sample Wallpaper -->
+        <div class="sample-wallpaper">
+        <table id='table'>
+            <tr>
+			    <th>Country_Region</th>
+			    <th>Deaths</th>
+			    <th>Confirmed</th>
+			    <th>Recovered</th>
+			    <th>Active</th>
+			</tr>
+          
+          </table>
+      </div>
+    </header>
+  </body>
+  <script type="text/javascript">
+  	const table = document.querySelector('#table')
+  	function loadData(){
+  		const request = new XMLHttpRequest()
+  		request.open('get','http://localhost:3000/stats')
+  		request.onload=()=>{
+  			try{
+  				const json = JSON.parse(request.responseText)
+  				populateTable(json)
+  			} catch(e){
+  				console.warn(e)
+  			}
+  		}
+  		request.send()
+  	}
+  	function populateTable(json){
+
+  		json.forEach((row)=>{
+  			console.log(row)
+  			let tr = document.createElement('tr')
+  			// Object.keys(row).map(item=>{
+  			// 	const td = document.createElement("td")
+  			// 	td.textContent = row[item]
+  			// 	tr.appendChild(td)
+  			// })
+  			let country = row['Country_Region']
+  			let death = row['Deaths']
+  			let confirmed = row['Confirmed']
+  			let recovered = row['Recovered']
+  			let active = row['Active']
+  			const countryTd = document.createElement("td")
+  			countryTd.textContent = country
+  			tr.appendChild(countryTd)
+  			const deathTd = document.createElement("td")
+  			deathTd.textContent = death
+  			tr.appendChild(deathTd)
+  			const confirmedTd = document.createElement("td")
+  			confirmedTd.textContent = confirmed
+  			tr.appendChild(confirmedTd)
+  			const recoveredTd = document.createElement("td")
+  			recoveredTd.textContent = recovered
+  			tr.appendChild(recoveredTd)
+  			const activeTd = document.createElement("td")
+  			activeTd.textContent = active
+  			tr.appendChild(activeTd)
+  			// row.forEach((cell)=>{
+  			// 	const td = document.createElement("td")
+  			// 	td.textContent = cell
+  			// 	tr.appendChild(td)
+  			// })
+  			table.appendChild(tr)
+  		})
+  	}
+  	document.addEventListener("DOMContentLoaded",()=>{loadData()})
+  </script>
+</html>
